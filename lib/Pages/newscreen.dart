@@ -4,12 +4,16 @@ import 'package:flutter/material.dart';
 
 import '../utils.dart';
 
-class NewScreen extends StatelessWidget{
-  String text;
+class NewScreen extends StatefulWidget {
+  @override
+  _NewScreenState createState() => _NewScreenState();
+}
+
+class _NewScreenState extends State<NewScreen> {
+  List<String> posts = [];
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -31,32 +35,35 @@ class NewScreen extends StatelessWidget{
               ),
             ),
             Expanded(
-              child:text==null?SizedBox():Posts(text: this.text)
-
+                child: Container(
+              margin: EdgeInsets.all(3.0),
+              child: ListView.builder(
+                itemCount: posts.length,
+                padding: EdgeInsets.all(3.0),
+                itemBuilder: (ctx, index) {
+                  return Posts(posts[index]);
+                },
               ),
-          ]
-          ),
+            )),
+          ]),
           SizedBox(
             width: MediaQuery.of(context).size.width,
             child: Align(
                 alignment: Alignment.bottomRight,
-                child:FloatingActionButton(
+                child: FloatingActionButton(
                   backgroundColor: Colors.blueAccent,
-                  onPressed: (){
+                  onPressed: () {
                     navigate(context, Texting(onText));
                   },
                   child: Icon(
                     Icons.add,
                     color: Colors.white,
                   ),
-                )
-            ),
+                )),
           )
         ],
       ),
     );
-
-
   }
 
   Widget status() {
@@ -91,7 +98,10 @@ class NewScreen extends StatelessWidget{
       ),
     );
   }
-  onText(String text){
-    this.text = text;
+
+  onText(String text) {
+    setState(() {
+      posts.add(text);
+    });
   }
 }
